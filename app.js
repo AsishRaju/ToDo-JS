@@ -1,7 +1,7 @@
 const addRef = document.querySelector('.add')
 const listRef=document.querySelector('.todos')
 const searchRef=document.querySelector('.search input')
-
+var todosList =[]
 const generateTemplate= todo=>{
 
     const htmlTemplate=`<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -32,6 +32,12 @@ listRef.addEventListener('click',(e)=>{
     if(e.target.classList.contains('delete'))
     {
         e.target.parentElement.remove()
+        const toDelete=e.target.parentElement.textContent.trim()
+        todosList = todosList.filter(item =>{
+            return item !== toDelete
+        })
+        localStorage.clear()
+        localStorage.setItem('prevTodos',JSON.stringify(todosList))
     }
 })
 
@@ -39,6 +45,8 @@ addRef.addEventListener('submit',(e)=>{
 
     e.preventDefault()
     const newTodo=addRef.inputField.value.trim()
+    todosList.push(newTodo)
+    localStorage.setItem('prevTodos',JSON.stringify(todosList))
     if(newTodo !== "")
     {
         generateTemplate(newTodo)
@@ -47,3 +55,12 @@ addRef.addEventListener('submit',(e)=>{
     addRef.reset()
     
 })
+
+
+if(localStorage.getItem('prevTodos'))
+{
+    JSON.parse(localStorage.getItem('prevTodos')).forEach((Element)=>{
+        todosList.push(Element)
+        generateTemplate(Element)
+    })
+}
