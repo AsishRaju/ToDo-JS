@@ -36,3 +36,9 @@ input[type=text]:focus{
 .delete{
     cursor: pointer;
 }
+
+.fa-edit{
+    cursor: pointer;
+    padding-right: 5px;
+}
+
